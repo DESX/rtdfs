@@ -2,22 +2,30 @@
 #define RFS_H
 #define UUID_SIZE 16
 
-//a device is a procssor
-//code can only be run on one device
+//a device is a processor
 //code can only be run on one device
 
 struct rfs_device; 
 //each device has a number of interfaces
 struct rfs_interface; 
-//each interface has a numper of files 
+//each interface has a number of files 
 struct rfs_file;
 //each file has a sequence of events 
 struct rfs_event;
 //each event is of one of these types
 enum{RFS_EVENT_OPEN,RFS_EVENT_UPDATE, RFS_EVENT_CLOSE};
+//called when device is initialized
+//uuid must be true universally unique id
+struct rfs_device* rfs_new_device(char[UUID_SIZE]);
+//adds new interface to device
+//function pointer will be called to send data
+struct rfs_interface* rfs_new_interface(struct rfs_device*,void (*send)(void*,unsigned int));
+//called by the driver when data is received
+struct rfs_receive(struct fts_interface*,void*,unsigned int);
 
+//called every time file has an event
 typedef void (*rfs_event_cb)(struct rfs_event*);
-
+//returns device is
 struct rfs_device * rfs_get_device(unsigned int); 
 
 struct rfs_file * rfs_open(struct rfs_interface*, rfs_event_cb, unsigned int size, unsigned int id);
