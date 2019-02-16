@@ -14,7 +14,7 @@ struct rfs_file;
 //each file has a sequence of events 
 struct rfs_event;
 //each event is of one of these types
-enum{RFS_OPEN,RFS_UPDATE, RFS_CLOSE};
+enum{RFS_EVENT_OPEN,RFS_EVENT_UPDATE, RFS_EVENT_CLOSE};
 
 typedef void (*rfs_event_cb)(struct rfs_event*);
 
