@@ -13,7 +13,8 @@ struct rfs_file;
 //each file has a sequence of events 
 struct rfs_event;
 //each event is of one of these types
-enum{RFS_EVENT_OPEN,RFS_EVENT_UPDATE, RFS_EVENT_CLOSE};
+enum{RFS_EVENT_OPEN,RFS_EVENT_UPDATE,RFS_EVENT_CLOSE};
+enum{RFS_EVENT_DEVICE_CONNECTED,RFS_EVENT_DEVICE_NEW_ID,RFS_EVENT_DEVICE_DISCONNECTED};
 //called when device is initialized
 //uuid must be true universally unique id
 struct rfs_device* rfs_new_device(char[UUID_SIZE]);
@@ -36,8 +37,16 @@ void              rfs_subscribe(struct rfs_file*);
 void *            rfs_data(struct rfs_file*);
 unsigned int      rfs_size(struct rfs_file*);
 
-unsigned int      rfs_device_id(struct rfs_device*);
+//the interface id is a unique number per each set of connected interfaces 
 unsigned int      rfs_interface_id(struct rfs_interface*);
+//each file has an id that is unique among all files on the interface
+//all file ids for an interface are always consecutive
+
+//the file id will change as files are added on the interface, and the file
+//the file id always starts at zero and is re-assigned as needed as devices are added
+//when a devices is connected to an interface, its id will change if there is already a device with the same id
+//devices receive an id one greater than the most recently connected device
+//when a device is disconnected from the interface, all newer devices will have their interface id's decremented
 unsigned int      rfs_file_id(struct rfs_file*);
 unsigned int      rfs_event_id(struct rfs_event*);
 
