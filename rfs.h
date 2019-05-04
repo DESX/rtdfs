@@ -4,31 +4,36 @@
 
 //a device is a processor
 //code can only be run on one device
-
 struct rfs_device; 
+
 //each device has a number of interfaces
 struct rfs_interface; 
+
 //each interface has a number of files 
 struct rfs_file;
+
 //each file has a sequence of events 
 struct rfs_event;
+
 struct rfs_update;
 //each event is of one of these types
-
-enum{RFS_EVENT_OPEN,RFS_EVENT_CLOSE,RFS_ONLINE,RFS_OFFLINE};
+enum{RFS_EVENT_OPEN, RFS_EVENT_CLOSE, RFS_ONLINE, RFS_OFFLINE};
 
 //called when device is initialized
 //uuid must be true universally unique id
 struct rfs_device* rfs_new_device(char[UUID_SIZE]);
+
 //adds new interface to device
 //function pointer will be called to send data
-struct rfs_interface* rfs_new_interface(struct rfs_device*,void (*send)(void*,unsigned int));
+struct rfs_interface* rfs_new_interface(struct rfs_device*, void (*send)(void*, unsigned int));
+
 //called by the driver when data is received
 //this function must be called every time there is new data on the intreface
 struct rfs_receive(struct fts_interface*,void*,unsigned int);
 
 //called every time file has an event
 typedef void (*rfs_event_cb)(struct rfs_event*);
+
 //returns device id
 struct rfs_device * rfs_get_device(unsigned int); 
 
